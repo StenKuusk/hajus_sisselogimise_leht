@@ -15,7 +15,7 @@ const Login = () => {
         password,
       });
       localStorage.setItem('token', response.data.token);
-      navigate('/')
+      navigate('/homepage');
       alert('Login successful!');
     } catch (error) {
       alert('Invalid credentials');
@@ -23,11 +23,14 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <form onSubmit={handleLogin}>
+        <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+        <button type="submit">Login</button>
+      </form>
+      <button onClick={() => navigate('/register')}>Register</button> {/* Register nupp */}
+    </div>
   );
 };
 
