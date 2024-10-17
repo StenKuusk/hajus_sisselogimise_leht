@@ -1,18 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Homepage.css';
 
 const Homepage = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Kustutame tokeni
-    navigate('/login'); // Suuname tagasi logimislehele
+    localStorage.removeItem('token');
+    navigate('/login');
   };
 
   return (
-    <div>
+    <div className='homepage'>
       <h1>Welcome to the Homepage!</h1>
-      <button onClick={handleLogout}>Logi välja</button> {/* Logout nupp */}
+      <button className='logout-button' onClick={handleLogout}>Logi välja</button>
     </div>
   );
 };

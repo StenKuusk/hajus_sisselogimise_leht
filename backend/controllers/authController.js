@@ -5,14 +5,33 @@ const jwt = require('jsonwebtoken');
 // Registreerimise funktsioon
 exports.register = (req, res) => {
   const { username, password } = req.body;
-  const hashedPassword = bcrypt.hashSync(password, 10);
 
-  const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
-  db.query(sql, [username, hashedPassword], (err, result) => {
+  // Kontrolli, et parool on olemas
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
+
+  // Kontrolli, kas kasutajanimi on juba olemas
+  const checkSql = 'SELECT * FROM users WHERE username = ?';
+  db.query(checkSql, [username], (err, results) => {
     if (err) {
-      return res.status(500).json({ message: 'Error registering user' });
+      return res.status(500).json({ message: 'Error checking username' });
     }
-    res.status(201).json({ message: 'User registered' });
+
+    if (results.length > 0) {
+      console.log('Kasutajanimi juba eksisteerib:', username);
+      return res.status(409).json({ message: 'Username already exists' });
+    }
+    
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const sql = 'INSERT INTO users (username, password) VALUES (?, ?)';
+    
+    db.query(sql, [username, hashedPassword], (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error registering user' });
+      }
+      res.status(201).json({ message: 'User registered successfully' });
+    });
   });
 };
 

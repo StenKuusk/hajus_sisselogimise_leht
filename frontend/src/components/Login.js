@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import '../styles/Login.css';
+import Popup from './Popup';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -15,10 +19,14 @@ const Login = () => {
         password,
       });
       localStorage.setItem('token', response.data.token);
-      navigate('/homepage');
-      alert('Login successful!');
+      setPopupMessage('Login successful!');
+      setShowPopup(true);
+      setTimeout(() => {
+        navigate('/homepage');
+      }, 2000);
     } catch (error) {
-      alert('Invalid credentials');
+      setPopupMessage('Invalid credentials');
+      setShowPopup(true);
     }
   };
 
@@ -28,8 +36,15 @@ const Login = () => {
         <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
         <button type="submit">Login</button>
+        <h2>Don't have an account? Make one.</h2>
+        <button className='register-button' onClick={() => navigate('/register')}>Register</button>
+      {showPopup && (
+        <Popup 
+          message={popupMessage} 
+          onClose={() => setShowPopup(false)} 
+        />
+      )}
       </form>
-      <button onClick={() => navigate('/register')}>Register</button> {/* Register nupp */}
     </div>
   );
 };
