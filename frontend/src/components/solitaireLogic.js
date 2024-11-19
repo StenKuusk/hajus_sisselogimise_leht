@@ -1,5 +1,5 @@
-const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
-const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+const suits = ["hearts", "diamonds", "clubs", "spades"];
+const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
 const createDeck = () => {
   const deck = [];
@@ -23,7 +23,9 @@ const initializeGame = () => {
   const deck = shuffleDeck(createDeck());
   const tableau = Array.from({ length: 7 }, (_, index) => {
     const column = deck.splice(0, index + 1);
-    column[column.length - 1].faceUp = true;
+    column.forEach((card, cardIndex) => {
+      card.faceUp = cardIndex === column.length - 1; // Only the last card is face-up
+    });
     return column;
   });
 
@@ -33,8 +35,25 @@ const initializeGame = () => {
   return { tableau, stock, foundations };
 };
 
+
+const renderCard = (card) => {
+  if (!card.faceUp) {
+    return <img src="/images/cards/card_back.png" alt="Card back" className="card" />;
+  }
+  const cardImage = `/images/cards/${card.value}${card.suit}.png`;
+  return <img src={cardImage} alt={`${card.value} of ${card.suit}`} className="card" />;
+};
+
 const handleCardClick = (card, tableauIndex, gameState) => {
   const newGameState = { ...gameState };
+  const column = newGameState.tableau[tableauIndex];
+
+  if (!card.faceUp && column[column.length - 1] === card) {
+    card.faceUp = true;
+    return newGameState;
+  }
+
+  // Add move validation logic for stacking here
   return newGameState;
 };
 
@@ -42,4 +61,4 @@ const checkWinCondition = (foundations) => {
   return foundations.every((foundation) => foundation.length === 13);
 };
 
-export { initializeGame, handleCardClick, checkWinCondition };
+export { initializeGame, renderCard, handleCardClick, checkWinCondition };

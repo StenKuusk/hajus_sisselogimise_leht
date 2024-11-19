@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Solitaire.css';
-import { initializeGame, handleCardClick, checkWinCondition } from './solitaireLogic';
+import { initializeGame, handleCardClick, checkWinCondition, renderCard } from './solitaireLogic';
+
 
 const Solitaire = () => {
   const navigate = useNavigate();
@@ -21,10 +22,10 @@ const Solitaire = () => {
 
   const renderTableau = () => {
     return gameState.tableau.map((column, index) => (
-      <div key={index}>
+      <div key={index} className="tableau-column">
         {column.map((card, cardIndex) => (
           <div key={cardIndex} onClick={() => onCardClick(card, index)}>
-            {card.value} of {card.suit} {card.faceUp ? '' : '(face down)'}
+            {renderCard(card)}
           </div>
         ))}
       </div>
