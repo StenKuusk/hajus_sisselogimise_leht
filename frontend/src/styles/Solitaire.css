@@ -15,7 +15,7 @@
 .back-button {
   position: fixed;
   top: 10px;
-  right: 10px;
+  left: 10px;
   padding: 8px 16px;
   font-size: 14px;
   cursor: pointer;
@@ -28,6 +28,24 @@
 
 .back-button:hover {
   background-color: #216bbe;
+}
+
+.undo-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #f44336;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  z-index: 100;
+  transition: background-color 0.3s ease;
+}
+
+.undo-button:hover {
+  background-color: #d32f2f;
 }
 
 h1 {
@@ -66,8 +84,48 @@ h1 {
   box-sizing: border-box;
 }
 
-.card-pile {
+.tableau-column {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.tableau-column > div {
+  position: relative;
+  margin-top: -80px; /* Adjust this value to control the overlap */
+}
+
+.tableau-column > div:first-child {
+  margin-top: 0;
+}
+
+.tableau-column.highlight {
+  border: 2px dashed #467fc0;
+  border-radius: 5px;
+  min-height: 140px;
+  min-width: 100px;
+}
+
+.foundations {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.foundation {
+  width: 100px;
+  height: 140px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  margin: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.empty-foundation {
+  width: 100px;
+  height: 140px;
+  border: 1px dashed #000;
+  border-radius: 5px;
 }
